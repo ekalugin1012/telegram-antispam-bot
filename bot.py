@@ -2,8 +2,7 @@ import os
 from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTypes
 
-# 🔑 Подставь свой токен
-BOT_TOKEN = "7476373145:AAHsOrXOnRwkatvt9ues6-i9n2i6BZb6k_A"
+BOT_TOKEN = os.getenv("BOT_TOKEN")  # Используем переменную окружения
 
 KEYWORDS = [
     "пришлю за спасибо",
@@ -28,7 +27,6 @@ KEYWORDS = [
     "отдам курс"
 ]
 
-# 🔠 Нормализация текста для защиты от латиницы
 def normalize_text(text):
     substitutions = {
         "a": "а", "e": "е", "o": "о", "c": "с", "p": "р", "y": "у", "x": "х", "b": "в", "h": "н", "k": "к", "m": "м", "t": "т",
@@ -53,20 +51,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             except Exception as e:
                 print(f"Ошибка при удалении: {e}")
 
-async def main():
+if __name__ == '__main__':
     app = ApplicationBuilder().token(BOT_TOKEN).build()
     app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message))
     print("Бот запущен...")
-    await app.run_polling()
-
-if __name__ == '__main__':
-    import asyncio
-
-    try:
-        loop = asyncio.get_event_loop()
-    except RuntimeError:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-
-    loop.create_task(main())
-    loop.run_forever()
+    app.run_polling()  # ВАЖНО: без await, без asyncio.run
