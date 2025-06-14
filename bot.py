@@ -1,5 +1,3 @@
-# Обновим код: заменим asyncio.run(main()) на get_event_loop().run_until_complete(main())
-updated_bot_code = """
 import os
 from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTypes
@@ -64,11 +62,3 @@ async def main():
 if __name__ == '__main__':
     import asyncio
     asyncio.get_event_loop().run_until_complete(main())
-"""
-
-# Сохраняем обновлённый файл
-file_path = "/mnt/data/bot.py"
-with open(file_path, "w", encoding="utf-8") as f:
-    f.write(updated_bot_code)
-
-file_path
